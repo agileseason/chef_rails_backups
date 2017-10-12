@@ -17,6 +17,10 @@ aws_s3 = node['chef_rails_backups']['aws_s3']
 postgresql = node['chef_rails_backups']['postgresql']
 schedule = node['chef_rails_backups']['schedule']
 
+directories = node['chef_rails_backups']['directories'].map do |dir_name|
+  "directory.add \"#{app.dir :root}/#{dir_name}\""
+end.join("\n")
+
 backup_model app.name do
   description "Back up #{app.name} database"
 
@@ -34,7 +38,7 @@ backup_model app.name do
     s3.thread_count      = 10
 
     s3.directories do |directory|
-      directory.add "#{app.dir :root}/public/uploads/store"
+      #{directories}
 
       # Exclude files/folders.
       # The pattern may be a shell glob pattern (see `File.fnmatch`) or a Regexp.
