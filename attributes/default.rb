@@ -17,3 +17,5 @@ default['chef_rails_backups']['aws_s3']['keep'] = nil
 
 default['chef_rails_backups']['schedule']['minute'] = nil
 default['chef_rails_backups']['schedule']['hour'] = nil
+
+default['chef_rails_backups']['directories'] = []
