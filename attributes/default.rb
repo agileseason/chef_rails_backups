@@ -1,9 +1,3 @@
-override['backup']['install_gem?'] = false
-override['backup']['config_path'] = '/opt/backup'
-override['backup']['model_path'] = '/opt/backup/models'
-
-default['chef_rails_backups']['ruby_version'] = nil
-
 default['chef_rails_backups']['postgresql']['username'] = nil
 default['chef_rails_backups']['postgresql']['password'] = nil
 
@@ -15,7 +9,16 @@ default['chef_rails_backups']['aws_s3']['bucket'] = nil
 default['chef_rails_backups']['aws_s3']['path'] = nil
 default['chef_rails_backups']['aws_s3']['keep'] = nil
 
+default['chef_rails_backups']['schedule']['enabled'] = false
 default['chef_rails_backups']['schedule']['minute'] = nil
 default['chef_rails_backups']['schedule']['hour'] = nil
+
+default['chef_rails_backups']['schedule_database']['enabled'] = false
+default['chef_rails_backups']['schedule_database']['minute'] = nil
+default['chef_rails_backups']['schedule_database']['hour'] = nil
+
+default['chef_rails_backups']['schedule_directories']['enabled'] = false
+default['chef_rails_backups']['schedule_directories']['minute'] = nil
+default['chef_rails_backups']['schedule_directories']['hour'] = nil
 
 default['chef_rails_backups']['directories'] = []
