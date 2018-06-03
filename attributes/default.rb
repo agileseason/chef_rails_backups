@@ -1,5 +1,6 @@
 default['chef_rails_backups']['postgresql']['username'] = nil
 default['chef_rails_backups']['postgresql']['password'] = nil
+default['chef_rails_backups']['postgresql']['host'] = 'localhost'
 
 default['chef_rails_backups']['aws_s3']['access_key_id'] = nil
 default['chef_rails_backups']['aws_s3']['secret_access_key'] = nil

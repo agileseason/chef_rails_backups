@@ -33,7 +33,7 @@ action :create do
         db.name               = "#{app.name}_#{app.env}"
         db.username           = "#{postgresql['username']}"
         db.password           = "#{postgresql['password']}"
-        db.host               = "localhost"
+        db.host               = "#{postgresql['host']}"
         db.port               = 5432
         db.additional_options = ["-xc", "-E=utf8"]
         # db.only_tables        = []
