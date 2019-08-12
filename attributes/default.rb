@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+default['chef_rails_backups']['postgresql']['database'] = nil
 default['chef_rails_backups']['postgresql']['username'] = nil
 default['chef_rails_backups']['postgresql']['password'] = nil
 default['chef_rails_backups']['postgresql']['host'] = 'localhost'

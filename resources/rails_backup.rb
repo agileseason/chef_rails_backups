@@ -30,7 +30,7 @@ action :create do
     config += <<-CONFIG
 
       database PostgreSQL do |db|
-        db.name               = "#{app.name}_#{app.env}"
+        db.name               = "#{postgresql['database'] || "#{app.name}_#{app.env}"}"
         db.username           = "#{postgresql['username']}"
         db.password           = "#{postgresql['password']}"
         db.host               = "#{postgresql['host']}"
@@ -42,7 +42,7 @@ action :create do
     CONFIG
   end
 
-  if backup_directories && backup_directories.any?
+  if backup_directories&.any?
     directories = backup_directories.map do |v|
       "          directory.add \"#{app.dir :root}/#{v}\""
     end.join("\n")
