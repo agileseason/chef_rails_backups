@@ -42,7 +42,7 @@ action :create do
     CONFIG
   end
 
-  if backup_directories&.any?
+  if backup_directories && backup_directories.any?
     directories = backup_directories.map do |v|
       "          directory.add \"#{app.dir :root}/#{v}\""
     end.join("\n")
