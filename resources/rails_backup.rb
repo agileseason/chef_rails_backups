@@ -15,25 +15,25 @@ action :create do
 
     store_with S3 do |s3|
       # AWS Credentials
-      s3.access_key_id     = "#{aws_s3['access_key_id']}"
-      s3.secret_access_key = "#{aws_s3['secret_access_key']}"
-      s3.storage_class     = "#{aws_s3['storage_class']}"
+      s3.access_key_id     = "#{new_resource.aws_s3['access_key_id']}"
+      s3.secret_access_key = "#{new_resource.aws_s3['secret_access_key']}"
+      s3.storage_class     = "#{new_resource.aws_s3['storage_class']}"
 
-      s3.region            = "#{aws_s3['region']}"
-      s3.bucket            = "#{aws_s3['bucket']}"
-      s3.path              = "#{aws_s3['path']}"
-      s3.keep              = "#{aws_s3['keep']}"
+      s3.region            = "#{new_resource.aws_s3['region']}"
+      s3.bucket            = "#{new_resource.aws_s3['bucket']}"
+      s3.path              = "#{new_resource.aws_s3['path']}"
+      s3.keep              = "#{new_resource.aws_s3['keep']}"
     end
   CONFIG
 
-  if backup_database
+  if new_resource.backup_database
     config += <<-CONFIG
 
       database PostgreSQL do |db|
-        db.name               = "#{postgresql['database'] || "#{app.name}_#{app.env}"}"
-        db.username           = "#{postgresql['username']}"
-        db.password           = "#{postgresql['password']}"
-        db.host               = "#{postgresql['host']}"
+        db.name               = "#{new_resource.postgresql['database'] || "#{new_resource.app.name}_#{new_resource.app.env}"}"
+        db.username           = "#{new_resource.postgresql['username']}"
+        db.password           = "#{new_resource.postgresql['password']}"
+        db.host               = "#{new_resource.postgresql['host']}"
         db.port               = 5432
         db.additional_options = ["-xc", "-E=utf8"]
         # db.only_tables        = []
@@ -42,21 +42,21 @@ action :create do
     CONFIG
   end
 
-  if backup_directories && backup_directories.any?
-    directories = backup_directories.map do |v|
-      "          directory.add \"#{app.dir :root}/#{v}\""
+  if new_resource.backup_directories && new_resource.backup_directories.any?
+    directories = new_resource.backup_directories.map do |v|
+      "          directory.add \"#{new_resource.app.dir :root}/#{v}\""
     end.join("\n")
 
     config += <<-CONFIG
 
       sync_with Cloud::S3 do |s3|
-        s3.access_key_id     = "#{aws_s3['access_key_id']}"
-        s3.secret_access_key = "#{aws_s3['secret_access_key']}"
-        s3.storage_class     = "#{aws_s3['storage_class']}"
+        s3.access_key_id     = "#{new_resource.aws_s3['access_key_id']}"
+        s3.secret_access_key = "#{new_resource.aws_s3['secret_access_key']}"
+        s3.storage_class     = "#{new_resource.aws_s3['storage_class']}"
 
-        s3.region            = "#{aws_s3['region']}"
-        s3.bucket            = "#{aws_s3['bucket']}"
-        s3.path              = "#{aws_s3['path']}"
+        s3.region            = "#{new_resource.aws_s3['region']}"
+        s3.bucket            = "#{new_resource.aws_s3['bucket']}"
+        s3.path              = "#{new_resource.aws_s3['path']}"
 
         s3.mirror            = true
         s3.thread_count      = 10
@@ -70,20 +70,20 @@ action :create do
     CONFIG
   end
 
-  backup_model backup_name do
-    description "Back up #{backup_name}"
+  backup_model new_resource.backup_name do
+    description "Back up #{new_resource.backup_name}"
     definition config
     schedule(
-      minute: schedule_minute,
-      hour: schedule_hour
+      minute: new_resource.schedule_minute,
+      hour: new_resource.schedule_hour
     )
     cron_options(
       command: <<~COMMAND.tr("\n", ' ')
         /bin/bash -il -c \"
-        RBENV_ROOT=/home/#{app.user}/.rbenv
-        RBENV_VERSION=#{app.ruby_version}
-        /home/#{app.user}/.rbenv/bin/rbenv exec
-        backup perform --trigger #{backup_name} --root-path /opt/backup/ > /dev/null
+        RBENV_ROOT=/home/#{new_resource.app.user}/.rbenv
+        RBENV_VERSION=#{new_resource.app.ruby_version}
+        /home/#{new_resource.app.user}/.rbenv/bin/rbenv exec
+        backup perform --trigger #{new_resource.backup_name} --root-path /opt/backup/ > /dev/null
         \"
       COMMAND
     )
