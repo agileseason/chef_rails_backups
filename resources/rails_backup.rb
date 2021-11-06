@@ -1,4 +1,5 @@
 resource_name :rails_backup
+provides :rails_backup
 
 property :backup_name, name_property: true
 property :app
