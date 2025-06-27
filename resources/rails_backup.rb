@@ -22,10 +22,10 @@ action :create do
       s3.region            = "#{new_resource.aws_s3['region']}"
     CONFIG
   end
-  if new_resource.fog_options['endpoint']
+  if new_resource.aws_s3['fog_options']['endpoint']
     s3_fog_options = <<-CONFIG
       s3.fog_options       = {
-        endpoint: "#{new_resource.fog_options['endpoint']}"
+        endpoint: "#{new_resource.aws_s3['fog_options']['endpoint']}"
       }
     CONFIG
   end

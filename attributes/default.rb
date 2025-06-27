@@ -13,7 +13,7 @@ default['chef_rails_backups']['aws_s3']['bucket'] = nil
 default['chef_rails_backups']['aws_s3']['path'] = nil
 default['chef_rails_backups']['aws_s3']['keep'] = nil
 
-default['chef_rails_backups']['fog_options']['endpoint'] = nil
+default['chef_rails_backups']['aws_s3']['fog_options']['endpoint'] = nil
 
 default['chef_rails_backups']['schedule']['enabled'] = false
 default['chef_rails_backups']['schedule']['minute'] = nil
