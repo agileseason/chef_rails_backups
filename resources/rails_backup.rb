@@ -101,6 +101,8 @@ action :create do
     cron_options(
       command: <<~COMMAND.tr("\n", ' ')
         /bin/bash -il -c \"
+        rm -rf /opt/backup/.data &&
+        rm -rf /opt/backup/.temp &&
         RBENV_ROOT=/home/#{new_resource.app.user}/.rbenv
         RBENV_VERSION=#{new_resource.app.ruby_version}
         /home/#{new_resource.app.user}/.rbenv/bin/rbenv exec
