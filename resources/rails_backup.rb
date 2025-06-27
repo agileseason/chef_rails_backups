@@ -6,6 +6,7 @@ property :app
 property :schedule_minute
 property :schedule_hour
 property :aws_s3
+property :fog_options
 property :postgresql
 property :backup_database
 property :backup_directories
@@ -21,10 +22,10 @@ action :create do
       s3.region            = "#{new_resource.aws_s3['region']}"
     CONFIG
   end
-  if new_resource.aws_s3['fog_options']
+  if new_resource.fog_options['endpoint']
     s3_fog_options = <<-CONFIG
       s3.fog_options       = {
-        endpoint: "#{new_resource.aws_s3['fog_options']['endpoint']}"
+        endpoint: "#{new_resource.fog_options['endpoint']}"
       }
     CONFIG
   end
