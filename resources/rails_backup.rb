@@ -11,6 +11,17 @@ property :backup_database
 property :backup_directories
 
 action :create do
+  if new_resource.aws_s3['storage_class']
+    s3_storage_class = <<-CONFIG
+      s3.storage_class     = "#{new_resource.aws_s3['storage_class']}"
+    CONFIG
+  end
+  if new_resource.aws_s3['region']
+    s3_region = <<-CONFIG
+      s3.region            = "#{new_resource.aws_s3['region']}"
+    CONFIG
+  end
+
   config = <<-CONFIG
     compress_with Gzip
 
@@ -18,9 +29,9 @@ action :create do
       # AWS Credentials
       s3.access_key_id     = "#{new_resource.aws_s3['access_key_id']}"
       s3.secret_access_key = "#{new_resource.aws_s3['secret_access_key']}"
-      s3.storage_class     = "#{new_resource.aws_s3['storage_class']}"
+#{s3_storage_class}
 
-      s3.region            = "#{new_resource.aws_s3['region']}"
+#{s3_region}
       s3.bucket            = "#{new_resource.aws_s3['bucket']}"
       s3.path              = "#{new_resource.aws_s3['path']}"
       s3.keep              = "#{new_resource.aws_s3['keep']}"
