@@ -21,6 +21,13 @@ action :create do
       s3.region            = "#{new_resource.aws_s3['region']}"
     CONFIG
   end
+  if new_resource.aws_s3['fog_options']
+    s3_fog_options = <<-CONFIG
+      s3.fog_options       = {
+        endpoint: "#{new_resource.aws_s3['fog_options']['endpoint']}"
+      }
+    CONFIG
+  end
 
   config = <<-CONFIG
     compress_with Gzip
@@ -30,6 +37,7 @@ action :create do
       s3.access_key_id     = "#{new_resource.aws_s3['access_key_id']}"
       s3.secret_access_key = "#{new_resource.aws_s3['secret_access_key']}"
 #{s3_storage_class}
+#{s3_fog_options}
 
 #{s3_region}
       s3.bucket            = "#{new_resource.aws_s3['bucket']}"
