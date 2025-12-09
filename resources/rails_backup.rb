@@ -102,7 +102,7 @@ action :create do
       command: <<~COMMAND.tr("\n", ' ')
         /bin/bash -il -c \"
         rm -rf /opt/backup/.data &&
-        rm -rf /opt/backup/.temp &&
+        rm -rf /opt/backup/.tmp &&
         RBENV_ROOT=/home/#{new_resource.app.user}/.rbenv
         RBENV_VERSION=#{new_resource.app.ruby_version}
         /home/#{new_resource.app.user}/.rbenv/bin/rbenv exec
