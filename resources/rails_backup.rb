@@ -43,7 +43,7 @@ action :create do
 #{s3_region}
       s3.bucket            = "#{new_resource.aws_s3['bucket']}"
       s3.path              = "#{new_resource.aws_s3['path']}"
-      s3.keep              = "#{new_resource.aws_s3['keep']}"
+      s3.keep              = #{new_resource.aws_s3['keep']}
     end
   CONFIG
 
