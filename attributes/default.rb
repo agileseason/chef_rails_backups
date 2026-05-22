@@ -28,3 +28,7 @@ default['chef_rails_backups']['schedule_directories']['minute'] = nil
 default['chef_rails_backups']['schedule_directories']['hour'] = nil
 
 default['chef_rails_backups']['directories'] = []
+
+default['chef_rails_backups']['gem']['from_git'] = false
+default['chef_rails_backups']['gem']['git_repo'] = 'https://github.com/backup/backup'
+default['chef_rails_backups']['gem']['git_branch'] = 'master'
