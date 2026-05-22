@@ -53,7 +53,7 @@ if node['chef_rails_backups']['gem']['from_git']
     code <<~SH
       set -e
       gem build backup.gemspec
-      gem install --local --no-document backup-*.gem
+      gem install --no-document backup-*.gem
       rm -f backup-*.gem
     SH
     action :nothing
