@@ -37,9 +37,9 @@ if node['chef_rails_backups']['gem']['from_git']
     revision node['chef_rails_backups']['gem']['git_branch']
     user app.user
     group app.group
-    notifies :run, 'bash[install backup gem from git]', :immediately
   end
 
+  installed_sha_file = "#{src_dir}/.installed_sha"
   bash 'install backup gem from git' do
     cwd src_dir
     user app.user
@@ -55,8 +55,9 @@ if node['chef_rails_backups']['gem']['from_git']
       gem build backup.gemspec
       gem install --no-document backup-*.gem
       rm -f backup-*.gem
+      git rev-parse HEAD > #{installed_sha_file}
     SH
-    action :nothing
+    not_if "test -f #{installed_sha_file} && [ \"$(cat #{installed_sha_file})\" = \"$(git -C #{src_dir} rev-parse HEAD)\" ]", user: app.user
   end
 end
 
